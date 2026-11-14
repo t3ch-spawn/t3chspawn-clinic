@@ -1,7 +1,10 @@
 import { useEffect, useLayoutEffect, useRef, useState, type FormEvent } from 'react';
 import gsap from 'gsap';
+import { SplitText } from 'gsap/SplitText';
 import { Toaster, toast } from 'sonner';
 import { ApiError, request, type Booking, type BookingPage, type Slot } from './api';
+
+gsap.registerPlugin(SplitText);
 
 const date = (value: string) => new Intl.DateTimeFormat('en-NG', { weekday: 'short', day: 'numeric', month: 'short', timeZone: 'Africa/Lagos' }).format(new Date(value));
 const time = (value: string) => new Intl.DateTimeFormat('en-NG', { hour: 'numeric', minute: '2-digit', timeZone: 'Africa/Lagos' }).format(new Date(value));
@@ -66,8 +69,25 @@ export default function App() {
   useLayoutEffect(() => {
     const media = gsap.matchMedia();
     media.add('(prefers-reduced-motion: no-preference)', () => {
+      const select = gsap.utils.selector(root);
       gsap.from('.reveal', { y: 18, opacity: 0, duration: .65, stagger: .12, ease: 'power2.out' });
-      gsap.from('.hero-word', { y: 28, autoAlpha: 0, duration: .65, stagger: .14, delay: .15, ease: 'power3.out' });
+      gsap.from('.site-header', { y: -12, autoAlpha: 0, duration: .5, ease: 'power2.out' });
+      gsap.from('.hero-eyebrow, .entry-heading', { y: 14, autoAlpha: 0, duration: .5, stagger: .1, ease: 'power2.out' });
+      SplitText.create(select('.hero-title'), {
+        type: 'words,chars',
+        autoSplit: true,
+        onSplit(self) {
+          return gsap.from(self.chars, { y: 24, autoAlpha: 0, duration: .55, stagger: .025, delay: .12, ease: 'power3.out' });
+        },
+      });
+      SplitText.create(select('.hero-copy'), {
+        type: 'lines',
+        mask: 'lines',
+        autoSplit: true,
+        onSplit(self) {
+          return gsap.from(self.lines, { yPercent: 100, autoAlpha: 0, duration: .6, stagger: .1, delay: .3, ease: 'power2.out' });
+        },
+      });
     }, root);
     return () => media.revert();
   }, []);
@@ -184,17 +204,17 @@ export default function App() {
 
   return <div ref={root} className="min-h-screen">
     <Toaster position="bottom-center" richColors closeButton />
-    <header className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-6 py-7">
+    <header className="site-header mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-6 py-7">
       <a href="/" className="flex items-center gap-3 text-xl font-semibold"><span className="logo" aria-hidden="true" />t3chspawn<span className="font-normal text-stone-500">clinic</span></a>
       <span className="text-sm text-stone-600">Care that makes room for you.</span>
     </header>
     <main className="mx-auto max-w-6xl px-6 pb-16">
-      <section className="reveal grid gap-8 border-y border-stone-300 py-12 md:grid-cols-[1.4fr_1fr] md:py-16">
-        <div><p className="eyebrow">YOUR HEALTH, YOUR TIME</p><h1 aria-label="A little time. A better you." className="mt-5 text-5xl leading-[1.08] tracking-tight md:text-7xl"><span aria-hidden="true"><span className="hero-word inline-block">A</span>{' '}<span className="hero-word inline-block">little</span>{' '}<span className="hero-word inline-block">time.</span><br /><span className="serif italic"><span className="hero-word inline-block">A</span>{' '}<span className="hero-word inline-block">better</span>{' '}<span className="hero-word inline-block">you.</span></span></span></h1></div>
-        <div className="max-w-sm self-end"><p className="text-lg leading-relaxed text-stone-600">Find a time that fits your day. Book an appointment with our clinic in a few simple steps.</p><p className="mt-5 text-sm font-medium">All appointment times in Lagos (WAT)</p></div>
+      <section className="grid gap-8 border-y border-stone-300 py-12 md:grid-cols-[1.4fr_1fr] md:py-16">
+        <div><p className="hero-eyebrow eyebrow">YOUR HEALTH, YOUR TIME</p><h1 className="hero-title mt-5 text-5xl leading-[1.08] tracking-tight md:text-7xl">A little time.<br /><span className="serif italic">A better you.</span></h1></div>
+        <div className="max-w-sm self-end"><p className="hero-copy text-lg leading-relaxed text-stone-600">Find a time that fits your day. Book an appointment with our clinic in a few simple steps.</p><p className="hero-copy mt-5 text-sm font-medium">All appointment times in Lagos (WAT)</p></div>
       </section>
       {!connected && <section className="reveal panel mt-8">
-        <h2 className="text-xl font-semibold">Connect to the clinic</h2>
+        <h2 className="entry-heading text-xl font-semibold">Connect to the clinic</h2>
         <p className="mt-2 text-sm text-stone-600">Assessment client: enter your API key to load appointments. It stays in this page's memory.</p>
         <form onSubmit={e => { e.preventDefault(); void perform(load); }} className="mt-5 flex flex-wrap items-end gap-3">
           <label className="grow">API key<input type="password" value={key} onChange={e => setKey(e.target.value)} autoComplete="off" required minLength={32} /></label>
