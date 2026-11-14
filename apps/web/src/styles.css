@@ -1,0 +1,145 @@
+@import "tailwindcss";
+@theme {
+  --font-sans: "Segoe UI", Arial, sans-serif;
+}
+:root {
+  font-family: var(--font-sans);
+  color: #173e35;
+  background: #f6f5ef;
+  font-synthesis: none;
+}
+body {
+  margin: 0;
+}
+button,
+a,
+input {
+  -webkit-tap-highlight-color: transparent;
+}
+button {
+  cursor: pointer;
+}
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+body.is-processing,
+body.is-processing * {
+  cursor: wait !important;
+}
+body.is-processing {
+  overflow-anchor: none;
+}
+[role="alert"] {
+  color: #991b1b;
+}
+button,
+input {
+  transition:
+    border-color 0.2s,
+    background-color 0.2s;
+}
+:focus-visible {
+  outline: 3px solid #aa7535;
+  outline-offset: 4px;
+}
+.serif {
+  font-family: Georgia, serif;
+}
+.logo {
+  position: relative;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  background: #173e35;
+  color: white;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  font-size: 30px;
+  font-weight: 300;
+}
+.logo::before,
+.logo::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: currentColor;
+  border-radius: 1px;
+}
+.logo::before {
+  width: 16px;
+  height: 2px;
+}
+.logo::after {
+  width: 2px;
+  height: 16px;
+}
+.eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.19em;
+}
+.panel {
+  padding: 26px;
+  border: 1px solid #d3d9cf;
+  border-radius: 18px;
+  background: #fdfdf9;
+}
+label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+}
+input {
+  display: block;
+  margin-top: 8px;
+  padding: 13px 14px;
+  border: 1px solid #cbd2c8;
+  border-radius: 8px;
+  width: 100%;
+  background: white;
+  color: #173e35;
+  font-size: 16px;
+  font-weight: 400;
+}
+.primary,
+.secondary {
+  padding: 14px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+}
+.primary {
+  background: #173e35;
+  color: #fff;
+}
+.primary:hover:enabled {
+  background: #28564b;
+}
+.secondary {
+  border: 1px solid #173e35;
+}
+.slot {
+  border: 1px solid #cbd2c8;
+  background: #fdfdf9;
+  padding: 20px;
+  border-radius: 12px;
+}
+.slot:hover:enabled {
+  border-color: #173e35;
+}
+.slot.chosen {
+  background: #e4eddf;
+  border-color: #173e35;
+  box-shadow: inset 0 0 0 1px #173e35;
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+  }
+}

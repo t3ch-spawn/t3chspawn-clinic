@@ -1,0 +1,16 @@
+{
+  "name": "clinic-booking", "private": true,
+  "workspaces": ["apps/*"],
+  "engines": {"node": ">=22.12.0"},
+  "scripts": {
+    "dev": "concurrently -k -n api,web \"npm run dev -w @clinic/api\" \"npm run dev -w @clinic/web\"",
+    "build": "npm run build -w @clinic/web",
+    "start": "npm run start -w @clinic/api",
+    "test": "npm run test -w @clinic/api",
+    "test:live": "npm run test:live -w @clinic/api",
+    "db:migrate": "npm run db:migrate -w @clinic/api",
+    "db:seed": "npm run db:seed -w @clinic/api",
+    "db:check": "npm run db:check -w @clinic/api"
+  },
+  "devDependencies": {"concurrently": "^9.2.1"}
+}
